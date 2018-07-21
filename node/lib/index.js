@@ -55,7 +55,7 @@ const runCode = (language = 'bash', file=mockFile()) => {
     fs.writeFile(`${dir}/${map[language]['filename']}`, file, (err) => {
       cmd.get(`
         cd ${epoch}
-        ${dockerMap(epoch, language)}
+        timeout 10 ${dockerMap(epoch, language)}
       `, (err, data) => {
         fs.readFile(dir + '/output.txt', 'utf8', (err, data) => {
           cmd.run(`rm -r ${dir}`)
