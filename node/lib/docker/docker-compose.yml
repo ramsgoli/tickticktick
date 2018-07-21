@@ -1,0 +1,20 @@
+version: "3"
+services:
+  bash:
+    container_name: bash
+    build:
+      context: ./bash
+      dockerfile: Dockerfile
+    image: tickticktick-bash:latest
+  cpp:
+    container_name: cpp
+    build:
+      context: ./cpp
+      dockerfile: Dockerfile
+    image: tickticktick-cpp:latest
+  python:
+    container_name: python
+    build:
+      context: ./python
+      dockerfile: Dockerfile
+    image: tickticktick-python:latest
