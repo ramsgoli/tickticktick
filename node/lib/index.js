@@ -20,7 +20,7 @@ var map = {
   }
 }
 
-const dockerMap = (epoch, key) => {
+const dockerMap = (epoch, key, imageID) => {
 
   const dockerCLI = `docker run \
                     -v ${__dirname}/${epoch}:/scripts \
@@ -28,7 +28,9 @@ const dockerMap = (epoch, key) => {
                     -w /scripts \
                     -t`
 
-  const pipeOutput = `> ${__dirname}/${epoch}/output.txt`
+  const pipeOutput = key === 'react'
+   ? `> ${__dirname}/../public/${imageID}.png`
+   : `> ${__dirname}/${epoch}/output.txt`
   return `${dockerCLI} ${map[key]['container']} bash /internal/run/run.sh ${pipeOutput}`
 }
 
@@ -50,7 +52,7 @@ const mockPY = () => (
   `print("hello from python")`
 )
 
-const runCode = (language = 'bash', file=mockFile()) => {
+const runCode = (language = 'bash', file=mockFile(), imageID) => {
   return new Promise((resolve, reject) => {
     const epoch = new Date().getTime()
     const dir = `${__dirname}/${epoch}`
@@ -59,8 +61,9 @@ const runCode = (language = 'bash', file=mockFile()) => {
     fs.writeFile(`${dir}/${map[language]['filename']}`, file, (err) => {
       cmd.get(`
         cd ${epoch}
-        ${dockerMap(epoch, language)}
+        ${dockerMap(epoch, language, imageID)}
       `, (err, data) => {
+        if (language === 'react') resolve()
         fs.readFile(dir + '/output.txt', 'utf8', (err, data) => {
           cmd.run(`rm -r ${dir}`)
           if (err) reject(err)
@@ -71,6 +74,8 @@ const runCode = (language = 'bash', file=mockFile()) => {
   })
 }
 
-module.exports = {
-  runCode
-}
+console.log(`${__dirname}/../public`)
+
+// module.exports = {
+//   runCode
+// }
