@@ -9,21 +9,20 @@ function postHandler(req, res) {
     return req.web.dialog.open({trigger_id: req.body.trigger_id, dialog: dialog})
   } else {
     res.send()
-    req.web.chat.postMessage({
-      channel: req.body.channel_id,
-      text: "⏳ Running your code...",
-      attachments: util.createOutputAttachments(req.body.text, "#3AA3E3")
-    })
+
     const sanitized = util.sanitize(req.body.text)
     const lang = util.detect(sanitized)
+    req.web.chat.postMessage({
+      channel: req.body.channel_id,
+      text: `⏳ Running your ${lang} code...`,
+      attachments: util.createOutputAttachments(req.body.text, "#3AA3E3")
+    })
 
-    console.log(lang);
-
-    lib.runCode('bash', sanitized)
+    lib.runCode(lang, sanitized)
       .then(res => {
         req.web.chat.postMessage({
           channel: req.body.channel_id,
-          text: util.createOutputText(),
+          text: util.createSuccessOutputText(),
           attachments: util.createOutputAttachments(res, '#228B22')
         })
       })
@@ -47,13 +46,12 @@ function dialogHandler(req, res) {
   })
 
   const sanitized = util.sanitize(payload.submission.code)
-  const lang = util.detect(sanitized)
 
-  lib.runCode('bash', sanitized)
+  lib.runCode(payload.submission.language_select, sanitized)
     .then(res => {
       req.web.chat.postMessage({
         channel: payload.channel.id,
-        text: util.createOutputText(),
+        text: util.createSuccessOutputText(),
         attachments: util.createOutputAttachments(res, '#228B22')
       })
     })

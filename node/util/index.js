@@ -8,7 +8,7 @@ function sanitize(str) {
 
 function createConfig() {
   return {
-    title: 'Your Code',
+    title: 'TickTickTick',
     callback_id: 'code-input',
     submit_label: 'Run',
     elements: [
@@ -20,6 +20,18 @@ function createConfig() {
           {
             "label": "Bash",
             "value": "bash"
+          },
+          {
+            label: 'C++',
+            value: 'cpp'
+          },
+          {
+            label: 'Python',
+            value: 'python'
+          },
+          {
+            label: 'React',
+            value: 'react'
           }
         ]
       },
@@ -33,8 +45,12 @@ function createConfig() {
   }
 }
 
-function createOutputText() {
+function createSuccessOutputText() {
   return "🚀 Code execution successful!"
+}
+
+function createFailOutputText() {
+  return "🐛 Your code failed!"
 }
 
 function createOutputAttachments(text, color) {
@@ -55,34 +71,34 @@ function detect(code){
   var language = detectLang(code)
   switch (language) {
     case 'C++':
-      return 'C++';
+      return 'cpp';
       break;
     case 'C':
-      return 'C++';
+      return 'cpp';
       break;
     case 'JavaScript':
-      return 'React'
+      return 'react'
       break;
     case 'Python':
-      return 'Python';
+      return 'python';
       break;
     case 'Java':
-      return 'C++';
+      return 'cpp';
       break;
     case 'HTML':
-      return 'React'
+      return 'react'
       break;
     case 'CSS':
-      return 'React';
+      return 'react';
       break;
     case 'Ruby':
-      return 'C++';
+      return 'cpp';
       break;
     case 'Go':
-      return 'C++';
+      return 'cpp';
       break;
     case 'PHP':
-      return 'React';
+      return 'react';
       break;
     default:
       return 'bash'
@@ -93,7 +109,8 @@ function detect(code){
 module.exports = {
   sanitize,
   createConfig,
-  createOutputText,
+  createSuccessOutputText,
+  createFailOutputText,
   createOutputAttachments,
   detect
 }
