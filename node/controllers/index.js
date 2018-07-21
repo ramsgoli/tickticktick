@@ -12,6 +12,8 @@ function postHandler(req, res) {
     const sanitized = util.sanitize(req.body.text)
     const lang = 'bash'
 
+    console.log(util.p("Detected: ", req.body.text));
+
     lib.runCode(lang, sanitized)
       .then(res => {
         req.web.chat.postMessage({

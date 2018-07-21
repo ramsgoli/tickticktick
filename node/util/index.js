@@ -1,3 +1,5 @@
+var detectLang = require('lang-detector');
+
 function sanitize(str) {
   return str
     .replace(/[\u2018\u2019]/g, "'")
@@ -49,9 +51,49 @@ function createOutputAttachments(text) {
   return attachments
 }
 
+function detect(code){
+  var language = detectLang(code)
+  switch (language) {
+    case 'C++':
+      return 'C++';
+      break;
+    case 'C':
+      return 'C++';
+      break;
+    case 'JavaScript':
+      return 'React'
+      break;
+    case 'Python':
+      return 'Python';
+      break;
+    case 'Java':
+      return 'C++';
+      break;
+    case 'HTML':
+      return 'React'
+      break;
+    case 'CSS':
+      return 'React';
+      break;
+    case 'Ruby':
+      return 'C++';
+      break;
+    case 'Go':
+      return 'C++';
+      break;
+    case 'PHP':
+      return 'React';
+      break;
+    default:
+      return 'Bash'
+      break;
+  }
+}
+
 module.exports = {
   sanitize,
   createConfig,
   createOutputText,
-  createOutputAttachments
+  createOutputAttachments,
+  detect
 }
