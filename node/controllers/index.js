@@ -9,6 +9,7 @@ function postHandler(req, res) {
     return req.web.dialog.open({trigger_id: req.body.trigger_id, dialog: dialog})
   } else {
     res.send()
+    console.log(req.body)
 
     const sanitized = util.sanitize(req.body.text)
     const lang = util.detect(sanitized)
@@ -18,15 +19,16 @@ function postHandler(req, res) {
       attachments: util.createOutputAttachments(req.body.text, "#3AA3E3")
     })
 
-    lib.runCode(lang, sanitized)
+    lib.runCode(lang, sanitized, req.body.trigger_id)
       .then(res => {
         req.web.chat.postMessage({
           channel: req.body.channel_id,
           text: util.createSuccessOutputText(),
-          attachments: util.createOutputAttachments(res, '#228B22')
+          attachments: util.createOutputAttachments(res, '#228B22', req.body.trigger_id)
         })
       })
       .catch(err => {
+        console.error(err)
         req.web.chat.postMessage({
           channel: req.body.channel_id,
           text: "Couldnt run your code"
