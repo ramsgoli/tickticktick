@@ -32,15 +32,15 @@ const mockFile = () => (
   `echo "Hello, World!"`
 )
 
-const mockCPP = () => {
-  return `#include <iostream>
+const mockCPP = () => (
+  `#include <iostream>
 
   using namespace std;
 
   auto main() -> int {
     cout << " Hello From Mock " << endl;
   }`
-}
+)
 
 const mockPY = () => (
   `print("hello from python")`
