@@ -14,3 +14,7 @@ app.use(bodyParser.json())
  * Routes
  */
 app.use('/api', router)
+
+app.listen(3000, () => {
+  console.log('listening on port 3000...')
+})
