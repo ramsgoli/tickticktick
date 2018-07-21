@@ -13,7 +13,10 @@ var map = {
   'python': {
     'container': 'tickticktick-python:latest',
     'filename': 'script.py'
-  }
+  },
+  'react': {
+    'container': 'tickticktick-react:latest',
+    'filename': 'index.js'
 }
 
 const dockerMap = (epoch, key) => {

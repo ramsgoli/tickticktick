@@ -18,3 +18,9 @@ services:
       context: ./python
       dockerfile: Dockerfile
     image: tickticktick-python:latest
+  react:
+    container_name: react
+    build:
+      context: ./react
+      dockerfile: Dockerfile
+    image: tickticktick-react:latest

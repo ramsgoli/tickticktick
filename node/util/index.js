@@ -53,7 +53,7 @@ function createFailOutputText() {
   return "🐛 Your code failed!"
 }
 
-function createOutputAttachments(text, color) {
+function createOutputAttachments(text, color, id) {
   const attachments = [
     {
       "text": "```" + text + "```",
@@ -63,7 +63,19 @@ function createOutputAttachments(text, color) {
       "attachment_type": "default",
     }
   ]
-
+  if (id) {
+    const images = fs.readdirSync("../public").filter(item => {
+      return item.includes(id) && (item.endsWith("png") || item.endsWith("jpg") ||
+          item.endsWith("jpeg") || item.endsWith("gif"))
+    })
+    images.forEach(image => {
+      attachments.push({
+        "attachment_type": "default",
+        "color": color,
+        "image_url": `http://something.ngrok.io/${image}`
+      })
+    })
+  }
   return attachments
 }
 
