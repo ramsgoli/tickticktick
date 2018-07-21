@@ -9,6 +9,10 @@ var map = {
   'cpp': {
     'container': 'tickticktick-cpp:latest',
     'filename': 'main.cpp'
+  },
+  'python': {
+    'container': 'tickticktick-python:latest',
+    'filename': 'script.py'
   }
 }
 
@@ -21,13 +25,12 @@ const dockerMap = (epoch, key) => {
                     -t`
 
   const pipeOutput = `> ${__dirname}/${epoch}/output.txt`
-  // console.log(`${dockerCLI} ${map[key]['container']} bash ${__dirname}/docker/${key}/run.sh ${pipeOutput}`)
   return `${dockerCLI} ${map[key]['container']} bash /internal/run/run.sh ${pipeOutput}`
 }
 
-const mockFile = () => {
-  return `#!/usr/bin/env bash \n ls -al \n echo "start" \n sleep 5 \n echo "Hello, World!"`
-}
+const mockFile = () => (
+  `echo "Hello, World!"`
+)
 
 const mockCPP = () => {
   return `#include <iostream>
@@ -39,7 +42,11 @@ const mockCPP = () => {
   }`
 }
 
-const runCode = (language = 'cpp', file=mockCPP()) => {
+const mockPY = () => (
+  `print("hello from python")`
+)
+
+const runCode = (language = 'bash', file=mockFile()) => {
   return new Promise((resolve, reject) => {
     const epoch = new Date().getTime()
     const dir = `${__dirname}/${epoch}`
@@ -60,7 +67,6 @@ const runCode = (language = 'cpp', file=mockCPP()) => {
   })
 }
 
-runCode().then(console.log).catch(console.log)
-// module.exports = {
-//   runCode
-// }
+module.exports = {
+  runCode
+}
