@@ -17,6 +17,7 @@ var map = {
   'react': {
     'container': 'tickticktick-react:latest',
     'filename': 'index.js'
+  }
 }
 
 const dockerMap = (epoch, key) => {
@@ -58,7 +59,7 @@ const runCode = (language = 'bash', file=mockFile()) => {
     fs.writeFile(`${dir}/${map[language]['filename']}`, file, (err) => {
       cmd.get(`
         cd ${epoch}
-        timeout 10 ${dockerMap(epoch, language)}
+        ${dockerMap(epoch, language)}
       `, (err, data) => {
         fs.readFile(dir + '/output.txt', 'utf8', (err, data) => {
           cmd.run(`rm -r ${dir}`)

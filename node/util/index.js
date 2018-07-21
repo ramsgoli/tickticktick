@@ -1,4 +1,5 @@
 var detectLang = require('lang-detector');
+const fs = require('fs')
 
 function sanitize(str) {
   return str
@@ -64,7 +65,7 @@ function createOutputAttachments(text, color, id) {
     }
   ]
   if (id) {
-    const images = fs.readdirSync("../public").filter(item => {
+    const images = fs.readdirSync("public").filter(item => {
       return item.includes(id) && (item.endsWith("png") || item.endsWith("jpg") ||
           item.endsWith("jpeg") || item.endsWith("gif"))
     })
@@ -72,7 +73,7 @@ function createOutputAttachments(text, color, id) {
       attachments.push({
         "attachment_type": "default",
         "color": color,
-        "image_url": `http://something.ngrok.io/${image}`
+        "image_url": `http://2906f367.ngrok.io/${image}`
       })
     })
   }
