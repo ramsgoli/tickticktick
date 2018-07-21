@@ -2,38 +2,34 @@ const util = require('../util')
 const lib = require('../lib')
 
 function postHandler(req, res) {
-  res.send()
 
-  const dialog = {
-    title: 'Your Code',
-    callback_id: 'code-input',
-    submit_label: 'Run',
-    elements: [
-      {
-        label: 'Language',
-        type: 'select',
-        name: 'language_select',
-        options: [
-          {
-            "label": "Bash",
-            "value": "bash"
-          }
-        ]
-      },
-      {
-        label: 'Your Code',
-        type: 'textarea',
-        name: 'code',
-        optional: false,
-      }
-    ],
+  if (!req.body.text) {
+    res.send()
+    const dialog = util.createConfig()
+    return req.web.dialog.open({trigger_id: req.body.trigger_id, dialog: dialog})
+  } else {
+    res.send(req.body.text)
+    const sanitized = util.sanitize(req.body.text)
+    const lang = 'bash'
+
+    lib.runCode(lang, sanitized)
+      .then(res => {
+        req.web.chat.postMessage({
+          channel: req.body.channel_id,
+          text: util.createOutputText(),
+          attachments: util.createOutputAttachments(res)
+        })
+      })
+      .catch(err => {
+        req.web.chat.postMessage({
+          channel: req.body.channel_id,
+          text: "Couldnt run your code"
+        })
+      })
   }
-
-  req.web.dialog.open({trigger_id: req.body.trigger_id, dialog: dialog})
 }
 
 function dialogHandler(req, res) {
-  console.log(req.body)
   res.send()
   const payload = JSON.parse(req.body.payload)
 
@@ -43,7 +39,11 @@ function dialogHandler(req, res) {
   })
   lib.runCode('bash', payload.submission.code)
     .then(res => {
-      req.web.chat.postMessage({channel: payload.channel.id, text: res})
+      req.web.chat.postMessage({
+        channel: payload.channel.id,
+        text: util.createOutputText(),
+        attachments: util.createOutputAttachments(res)
+      })
     })
     .catch(err => {
       req.web.chat.postMessage({channel: payload.channel.id, text: err})
