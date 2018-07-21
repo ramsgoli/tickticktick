@@ -1,8 +1,12 @@
 const express = require('express')
 const router = express.Router()
 
+const util = require('../util')
+
 router.post('/', (req, res) => {
-  res.send(req.body.text)
+  const sanitized = util.sanitize(req.body.text)
+  console.log('sanitized: ', sanitized)
+  res.send(sanitized)
 })
 
 module.exports = router
