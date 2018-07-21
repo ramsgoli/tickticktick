@@ -63,7 +63,10 @@ const runCode = (language = 'bash', file=mockFile(), imageID) => {
         cd ${epoch}
         ${dockerMap(epoch, language, imageID)}
       `, (err, data) => {
-        if (language === 'react') resolve()
+        if (language === 'react') {
+          cmd.run(`rm -r ${dir}`)
+          resolve()
+        }
         fs.readFile(dir + '/output.txt', 'utf8', (err, data) => {
           cmd.run(`rm -r ${dir}`)
           if (err) reject(err)
@@ -74,8 +77,6 @@ const runCode = (language = 'bash', file=mockFile(), imageID) => {
   })
 }
 
-console.log(`${__dirname}/../public`)
-
-// module.exports = {
-//   runCode
-// }
+module.exports = {
+  runCode
+}
