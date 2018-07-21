@@ -37,13 +37,13 @@ function createOutputText() {
   return "🚀 Code execution successful!"
 }
 
-function createOutputAttachments(text) {
+function createOutputAttachments(text, color) {
   const attachments = [
     {
       "text": "```" + text + "```",
       "fallback": "You are unable to choose a game",
       "callback_id": "code-output",
-      "color": "#3AA3E3",
+      "color": color,
       "attachment_type": "default",
     }
   ]
@@ -85,7 +85,7 @@ function detect(code){
       return 'React';
       break;
     default:
-      return 'Bash'
+      return 'bash'
       break;
   }
 }

@@ -13,6 +13,7 @@ const router = require('./routers')
  */
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use(express.static('public'))
 app.use((req, res, next) => {
   req.web = web
   next()
