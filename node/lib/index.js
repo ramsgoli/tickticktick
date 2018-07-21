@@ -2,16 +2,21 @@ const fs = require('fs');
 const cmd = require('node-cmd');
 
 const dockerMap = (epoch, key) => {
+
+  const dockerCLI = `docker run \
+                    -v ${__dirname}/${epoch}:/scripts \
+                    -w /scripts \
+                    -t`
+
+  const pipeOutput = `> ${__dirname}/${epoch}/output.txt`
+
   const map = {
-    'bash': `docker run \
-            -v ${__dirname}/${epoch}:/scripts \
-            -w /scripts \
-            -t \
-            ubuntu \
-            bash script.sh \
-              > ${__dirname}/${epoch}/output.txt`
+    'bash': {
+      'container': 'ubuntu',
+      'script': 'bash script.sh'
+    }
   }
-  return map[key]
+  return `${dockerCLI} ${map[key]['container']} ${map[key]['script']} ${pipeOutput}`
 }
 
 const mockFile = () => {
