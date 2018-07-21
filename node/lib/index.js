@@ -31,7 +31,7 @@ const runCode = (interpreter = 'bash', file=mockFile()) => {
       `, (err, data) => {
         fs.readFile(dir + '/output.txt', 'utf8', (err, data) => {
           cmd.run(`rm -r ${dir}`)
-          if (err) reject()
+          if (err) reject(err)
           resolve(data)
         })
       })
@@ -39,4 +39,6 @@ const runCode = (interpreter = 'bash', file=mockFile()) => {
   })
 }
 
-runCode().then(console.log)
+module.exports = {
+  runCode
+}

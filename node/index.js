@@ -3,13 +3,20 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 
+const { WebClient } = require('@slack/client');
+const web = new WebClient(process.env.SLACK_AUTH_TOKEN);
+
 const router = require('./routers')
 
 /*
  * Load middlewares
  */
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+app.use((req, res, next) => {
+  req.web = web
+  next()
+})
 
 /**
  * Routes

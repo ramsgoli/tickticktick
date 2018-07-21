@@ -6,4 +6,8 @@ router.post('/', (req, res) => {
   return postController.postHandler(req, res)
 })
 
+router.post('/dialog', (req, res) => {
+  return postController.dialogHandler(req, res)
+})
+
 module.exports = router
