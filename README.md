@@ -1,10 +1,13 @@
-# tickticktick
+# TickTickTick
+## Run `code` in Slack without leaving the conversation.
+![Bash](https://github.com/ramsgoli/tickticktick/raw/master/examples/gifs/bash.gif)
+### Debug programs in consistent environments
+![C++](https://github.com/ramsgoli/tickticktick/raw/master/examples/gifs/cpp.gif)
+### Design and render React components inline
+![React](https://github.com/ramsgoli/tickticktick/raw/master/examples/gifs/react.gif)
+### Supports Python + libraries too
+![mpl](https://github.com/ramsgoli/tickticktick/raw/master/examples/gifs/mpl.gif)
 
-Remote code execution in Slack.
+**Won 1st place at Slackathon 2018**
 
-Slackathon 2018
-
-
-Demo Below - Click To Watch!
-
-[![TickTickTickDemo](https://i.imgur.com/ylvgevm.png)](https://vimeo.com/281198976 "Click To Watch~!")
+_More details: https://www.lelandjansen.com/project/tickticktick_
