@@ -42,7 +42,7 @@ function dialogHandler(req, res) {
   const payload = JSON.parse(req.body.payload)
 
   req.web.chat.postMessage({
-    channel: payload.channel.id,
+    channel: req.body.channel_id,
     text: "⏳ Running your code...",
     attachments: util.createOutputAttachments(payload.submission.code, "#3AA3E3")
   })
@@ -52,13 +52,16 @@ function dialogHandler(req, res) {
   lib.runCode(payload.submission.language_select, sanitized)
     .then(res => {
       req.web.chat.postMessage({
-        channel: payload.channel.id,
+        channel: req.body.channel_id,
         text: util.createSuccessOutputText(),
         attachments: util.createOutputAttachments(res, '#228B22')
       })
     })
     .catch(err => {
-      req.web.chat.postMessage({channel: payload.channel.id, text: err})
+      req.web.chat.postMessage({
+        channel: req.body.channel_id,
+        text: err
+      })
     })
 }
 
