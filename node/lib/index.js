@@ -1,5 +1,6 @@
 const fs = require('fs');
 const cmd = require('node-cmd');
+const { redisSet } = require('../redis')
 
 var map = {
   'bash': {
@@ -70,6 +71,11 @@ const runCode = (language = 'bash', file=mockFile(), imageID) => {
         fs.readFile(dir + '/output.txt', 'utf8', (err, data) => {
           cmd.run(`rm -r ${dir}`)
           if (err) reject(err)
+          if (language === 'python' || language === 'bash' || language === 'cpp') {
+            redisSet(file, data)
+              .then(resolve(data))
+              .catch(reject(data))
+          }
           resolve(data)
         })
       })
