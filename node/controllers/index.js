@@ -29,29 +29,21 @@ function postHandler(req, res) {
 
 async function cachedCode(req, lang, sanitized) {
   try {
-    const [ error, reply ] = await redisGet(sanitized)
+    const reply = await redisGet(sanitized)
 
-    if (error) {
-      return runCode(req, lang, sanitized)
-    } else if (reply) {
-      // Hit Cache
-      // We need to wait a bit otherwise response message
-      //  can hit server before `Running your x Code` does
-
+    if (reply) {
       setTimeout(() => {
         req.web.chat.postMessage({
           channel: req.body.channel_id,
           text: util.createSuccessOutputText(),
           attachments: util.createOutputAttachments(reply, '#228B22', req.body.trigger_id)
         })
-      }, 200)
-
+      }, 100)
     } else {
-      //Not Cached
-      return runCode(req, lang, sanitized)
+      runCode(req, lang, sanitized)
     }
   } catch (e) {
-    console.log(e)
+    runCode(req, lang, sanitized)
   }
 }
 

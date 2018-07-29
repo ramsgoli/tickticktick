@@ -21,8 +21,8 @@ function redisSet(code, value) {
 function redisGet(code) {
   return new Promise((resolve, reject) => {
     const key = sha1(code)
-    client.get(key, (err, reply) => {
-      resolve([err, reply])
+    client.get(key, (err, res) => {
+      res ? resolve() : reject()
     })
   })
 }

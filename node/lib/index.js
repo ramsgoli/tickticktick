@@ -27,6 +27,8 @@ const dockerMap = (epoch, key, imageID) => {
                     -v ${__dirname}/${epoch}:/scripts \
                     -v ${__dirname}/docker/${key}:/internal/run \
                     -w /scripts \
+                    --network none \
+                    --cpus=".3" \
                     -t`
 
   const pipeOutput = key === 'react'
@@ -75,8 +77,9 @@ const runCode = (language = 'bash', file=mockFile(), imageID) => {
             redisSet(file, data)
               .then(resolve(data))
               .catch(reject(data))
+          } else {
+            resolve(data)
           }
-          resolve(data)
         })
       })
     })
