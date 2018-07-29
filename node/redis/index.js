@@ -22,7 +22,7 @@ function redisGet(code) {
   return new Promise((resolve, reject) => {
     const key = sha1(code)
     client.get(key, (err, res) => {
-      res ? resolve() : reject()
+      res ? resolve(res) : reject()
     })
   })
 }
