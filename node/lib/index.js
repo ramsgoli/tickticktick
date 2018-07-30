@@ -1,5 +1,6 @@
 const fs = require('fs');
 const cmd = require('node-cmd');
+const { redisSet } = require('../redis')
 
 var map = {
   'bash': {
@@ -26,6 +27,8 @@ const dockerMap = (epoch, key, imageID) => {
                     -v ${__dirname}/${epoch}:/scripts \
                     -v ${__dirname}/docker/${key}:/internal/run \
                     -w /scripts \
+                    --network none \
+                    --cpus=".3" \
                     -t`
 
   const pipeOutput = key === 'react'
@@ -70,7 +73,13 @@ const runCode = (language = 'bash', file=mockFile(), imageID) => {
         fs.readFile(dir + '/output.txt', 'utf8', (err, data) => {
           cmd.run(`rm -r ${dir}`)
           if (err) reject(err)
-          resolve(data)
+          if (language === 'python' || language === 'bash' || language === 'cpp') {
+            redisSet(file, data)
+              .then(resolve(data))
+              .catch(reject(data))
+          } else {
+            resolve(data)
+          }
         })
       })
     })
